@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Chane to the directory from which the script is being run
+cd "$(dirname "$0")"
+
 # Check if the script is being run as root
 if [ "$(id -u)" -ne 0 ]; then
     echo "This script must be run as root. Please use 'sudo' to execute it."

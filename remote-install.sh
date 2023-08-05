@@ -4,8 +4,8 @@ set -eu
 # To test, run a server in this directory:
 #   python -m http.server 9000
 
-# Then run this script:
-#   sh <(curl -sSL http://localhost:9000/remote-install.sh) $(pwd)
+# Then test  this script locally:
+#   sh <(curl -sSL http://localhost:9000/remote-install.sh) test
 
 
 # Check if the script is being run with an argument
@@ -13,7 +13,7 @@ set -eu
 if [ $# -eq 1 ]; then
     # Create a temporary directory
     tmp_dir="$(mktemp -d)"
-    cp -av . "$tmp_dir"
+    cp -a . "$tmp_dir"
     sudo sh "$tmp_dir/install.sh"
     exit 0
 fi
