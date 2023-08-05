@@ -9,8 +9,11 @@ Linux system with Debian 12 installed.
 
 ## How ro run
 
-## Locally
+## Remote
 
+sh <(curl -L https://raw.githubusercontent.com/KindOS-workspace/system-profile/master/remote-install.sh) 
+
+## Locally
 ```bash
 sudo ./install.sh
 ```
