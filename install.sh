@@ -17,7 +17,7 @@ if ! getent passwd "$username" >/dev/null 2>&1; then
     useradd -m --shell /bin/bash "$username"
     echo "User $username added with Bash as the default shell."
 else
-    echo "User $username already exists."
+    echo "User $username found - OK."
 fi
 
 set -eu
@@ -25,3 +25,5 @@ set -eu
 cp -r debian12/* /
 chown -R root:root /etc/sudoers.d
 chmod -R 440 /etc/sudoers.d/kindos
+
+echo "Installation completed successfully."
