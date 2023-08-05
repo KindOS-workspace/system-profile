@@ -11,7 +11,7 @@ Linux system with Debian 12 installed.
 
 ## Remote
 
-sh <(curl -L https://raw.githubusercontent.com/KindOS-workspace/system-profile/master/remote-install.sh) 
+sh <(curl -Ls https://raw.githubusercontent.com/KindOS-workspace/system-profile/master/remote-install.sh) 
 
 ## Locally
 ```bash

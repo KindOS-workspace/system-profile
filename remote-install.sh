@@ -5,7 +5,7 @@ set -eu
 #   python -m http.server 9000
 
 # Then test  this script locally:
-#   sh <(curl -sSL http://localhost:9000/remote-install.sh) test
+#   sh <(curl -Ls http://localhost:9000/remote-install.sh) test
 
 
 # Check if the script is being run with an argument
@@ -30,7 +30,7 @@ url="https://github.com/KindOS-workspace/system-profile/archive/refs/heads/main.
 tmp_dir="$(mktemp -d)"
 
 # Download the current banch to the temporary directory
-curl -sSL  https://github.com/KindOS-workspace/system-profile/archive/refs/heads/main.tar.gz -o "$tmp_dir/system-profile.tar.gz"
+curl -Ls https://github.com/KindOS-workspace/system-profile/archive/refs/heads/main.tar.gz -o "$tmp_dir/system-profile.tar.gz"
 
 # Extract the archive
 tar -xzf "$tmp_dir/system-profile.tar.gz" -C "$tmp_dir"
