@@ -14,3 +14,6 @@ git openssh-client
 
 # For lang support
 locales
+
+# For the ps command
+procps
