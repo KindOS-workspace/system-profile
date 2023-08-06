@@ -1,0 +1,66 @@
+#!/bin/bash
+set -eu
+
+export DOCKER_HOST="tcp://127.0.0.1:2375"
+
+action=$1
+
+check_root() {
+    # Check if running with root
+    if [ "$EUID" -ne 0 ]; then
+        echo "Please run as root"
+        exit 1
+    fi
+}
+
+start() {
+
+    check_root
+    mkdir -p /var/log/docker
+    cd /var/log/docker
+    PATH=/usr/local/bin/docker-all:$PATH nohup \
+        /usr/local/bin/docker-all/dockerd -H $DOCKER_HOST \
+        > dockerd.log 2>&1 &
+}
+
+status()
+{
+    if [ -f /var/run/docker.pid ]; then
+        echo "Docker is running"
+    else
+        echo "Docker is NOT running"
+        exit 1
+    fi
+}
+
+stop() {
+    check_root
+    if [ -f /var/run/docker.pid ]; then
+        kill $(cat /var/run/docker.pid)
+    else
+        echo "Docker is NOT running"
+        exit 1
+    fi
+}
+
+
+case $action in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    log)
+        tail -f /var/log/docker/dockerd.log
+        ;;
+    *)
+        echo "Invalid action: $action"
+        exit 1
+        ;;
+esac
+
+

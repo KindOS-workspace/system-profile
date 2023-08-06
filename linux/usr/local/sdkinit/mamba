@@ -1,0 +1,32 @@
+#!/bin/bash
+set -eu
+
+# check action on first param
+action="${1:-install}"
+extra_args="${@:2}"
+
+function remove() {
+    rm -rf ~/mamba
+}
+
+function install() {
+    args="${@:-}"
+    tmp_dir=$(mktemp -d)
+    curl -o $tmp_dir/mambainstall.sh -Ls "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+    bash $tmp_dir/mambainstall.sh -b -p ~/mamba $args
+    ~/mamba/bin/mamba init
+}
+
+
+case $action in
+    install)
+        install $extra_args
+        ;;
+    remove)
+        remove
+        ;;
+    *)
+        echo "Invalid action: $action"
+        exit 1
+        ;;
+esac

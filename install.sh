@@ -31,6 +31,7 @@ rm -rf /etc/profile.d/kindos.d
 cp -r linux/* /
 chmod 644 /etc/profile.d/kindos-profile.sh /etc/profile.d/kindos.d/*.sh
 chmod 755 /usr/local/bin/*
+chmod 755 /usr/local/sdkinit/*
 debian12/provision.sh
 
 
@@ -44,8 +45,11 @@ echo "Loading the new profile for testing"
 
 # Check if running in test mode
 if [ "$test_mode" = "true" ]; then
+    # Run the SDK initialization script in test mode
+    echo "Running the test suite..."
     sudo su - "$username" -c "sdkinit mamba"
-else:
+    echo "Done"
+else
     # Always perform a basic test
     sudo su - "$username" -c "true"
 fi

@@ -1,0 +1,52 @@
+#!/bin/bash
+set -eu
+
+# check action on first param
+action="${1:-install}"
+extra_args="${@:2}"
+
+function remove() {
+    rm -rf ~/mamba
+}
+
+function install() {
+    # Check if running with root
+    if [ "$EUID" -ne 0 ]; then
+        echo "Please run as root"
+        exit 1
+    fi
+
+    #check if iptales is installed
+    if ! command -v iptables &> /dev/null
+    then
+        echo "iptables could not be found"
+        exit 1
+    fi
+
+    args="${@:-}"
+    tmp_dir=$(mktemp -d)
+    cd $tmp_dir
+    curl -sO https://download.docker.com/linux/static/stable/x86_64/docker-24.0.5.tgz
+    tar xf docker-24.0.5.tgz
+    /usr/bin/install -d -m 755 /usr/local/bin/docker-all
+    /usr/bin/install -m 755 docker/* /usr/local/bin/docker-all
+    /usr/bin/install -m 755 /usr/local/sdkinit/docker.files/* /usr/local/bin/
+
+    echo "Docker installed"
+    echo "You can start the docker service with:"
+    echo "  sudo dockerd start"
+}
+
+
+case $action in
+    install)
+        install $extra_args
+        ;;
+    remove)
+        remove
+        ;;
+    *)
+        echo "Invalid action: $action"
+        exit 1
+        ;;
+esac

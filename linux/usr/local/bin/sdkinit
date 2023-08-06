@@ -2,33 +2,27 @@
 
 set -eu
 
-supported_sdks=(
-    "mamba"
-)
+if [[ $1 == --* ]]; then
+    action="${1:2}"
+    # remove "-" from the action
+    action="${action//-/}"
+    shift
+else
+    action="install"
+fi
+extra_args="${@:2}"
 
-function install_mamba () {
-    args="${@:1}"
-    # if --remove in args
-    if [[ " ${args[@]} " =~ " --remove " ]]; then
-        echo "Removing mamba"
-        rm -rf ~/mamba
-        return
-    fi
-    echo "Installing mamba"
-    #create random tmp dir
-    tmp_dir=$(mktemp -d)
-    curl -o $tmp_dir/mambainstall.sh -Ls "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
-    bash $tmp_dir/mambainstall.sh -b -p ~/mamba $args
-    ~/mamba/bin/mamba init
-}
+# Get list of supported SDKs from the directory names in linux/usr/local/sdkinit
+supported_sdks=($(ls -d /usr/local/sdkinit/* | xargs -n 1 basename| grep -v "\.files"))
 
 # First argument is required
-if [ -z "${1:-}" ]; then
-    echo "Usage: sdkinit <sdk>"
-    echo "Supported SDKs: ${supported_sdks[@]}"
+if [ $# -eq 0 ]; then
+    echo "No SDK specified"
+    echo "Supoorted SDKs: ${supported_sdks[@]}"
     exit 1
 fi
 
+sdk=${1}
 # Check if the skd is supported
 if [[ ! " ${supported_sdks[@]} " =~ " ${1} " ]]; then
     echo "Unsupported SDK: $1"
@@ -36,16 +30,5 @@ if [[ ! " ${supported_sdks[@]} " =~ " ${1} " ]]; then
     exit 1
 fi
 
-sdk=$1
-extra_args="${@:2}"
-
-case "$1" in
-    "mamba")
-        install_mamba $extra_args
-        ;;
-    *)
-        echo "Unknown SDK: $1"
-        ;;
-esac
-
-
+echo "Running action '$action' for '$sdk'"
+/usr/local/sdkinit/${sdk} ${action} $extra_args
