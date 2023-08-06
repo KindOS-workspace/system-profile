@@ -14,21 +14,23 @@ for PACKAGE in $REQUIRE_PACKAGES; do
 done
 [[ -n "$MISSING" ]] && apt-get update && apt-get install -y $MISSING
 
+function setup_locale() {
 
-# cat <<EOF > /etc/default/locale
-# LANG="en_US.UTF-8"
-# LC_MESSAGES="en_US.UTF-8"
-# LC_ALL="en_US.UTF-8"
-# EOF
+    cat <<EOF > /etc/default/locale
+LANG="en_US.UTF-8"
+LC_MESSAGES="en_US.UTF-8"
+LC_ALL="en_US.UTF-8"
+EOF
 
-# echo "locales locales/default_environment_locale select $LOCALE" | debconf-set-selections
-# echo "locales locales/locales_to_be_generated multiselect $LOCALE UTF-8" | debconf-set-selections
-# rm "/etc/locale.gen"
-# dpkg-reconfigure --frontend noninteractive locales
+    echo "locales locales/default_environment_locale select $LOCALE" | debconf-set-selections
+    echo "locales locales/locales_to_be_generated multiselect $LOCALE UTF-8" | debconf-set-selections
+    rm "/etc/locale.gen"
+    dpkg-reconfigure --frontend noninteractive locales
+}
 
+grep -q "LANG" /etc/default/locale  || setup_locale
 
 # This is neeed because bashrc will be sourced by vscode and it will override PS1
-
 sed -i '/vscode/d' /etc/bash.bashrc
 echo '[[ "TERM_PROGRAM"=vscode ]] && source /etc/profile.d/kindos.d/prompt.sh' >> /etc/bash.bashrc
 
