@@ -18,5 +18,5 @@ function check_default_file {
 # check if userprofile is set
 if [[ -n "${USERPROFILE}" ]]; then
     check_default_file .ssh
-    check_default_file .gitconfigf
+    check_default_file .gitconfig
 fi
