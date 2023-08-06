@@ -1,5 +1,4 @@
 #!/bin/sh
-set -eu
 
 function print_verion() {
   VERSION=$(cat /etc/kindos/system-profile-version)
