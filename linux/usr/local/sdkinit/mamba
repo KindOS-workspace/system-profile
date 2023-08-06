@@ -6,6 +6,7 @@ action="${1:-install}"
 extra_args="${@:2}"
 
 function remove() {
+    echo "removing mamba"
     rm -rf ~/mamba
 }
 
@@ -19,6 +20,10 @@ function install() {
 
 
 case $action in
+    install-check)
+        [[ ! -d ~/mamba ]] && exit 1
+        exit 0
+        ;;
     install)
         install $extra_args
         ;;

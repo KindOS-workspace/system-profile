@@ -27,12 +27,33 @@ else
 fi
 extra_args="${@:2}"
 
+function check_sdk_actions() {
+    action=$1
+    # if action is installed
+    if [[ $action == "installed" ]]; then
+        INSTALLED=""
+        for sdk in ${supported_sdks[@]}; do
+            /usr/local/sdkinit/${sdk} install-check && INSTALLED="${INSTALLED} ${sdk}"
+        done
+        echo -e "Installed SDKs:${INFO}${INSTALLED}${RESET}"
+    else
+        echo -e "${RED}Unsupported SDK action $action${RESET}"
+        exit 1
+    fi
+}
 
-sdk=${1}
+sdk=${1:-}
+
+# if sdk is not null
+if [ -z "$sdk" ]; then
+    check_sdk_actions $action
+    exit 0
+fi
+
 # Check if the skd is supported
-if [[ ! " ${supported_sdks[@]} " =~ " ${1} " ]]; then
-    echo "Unsupported SDK: $1"
-    echo "Supoorted SDKs: ${supported_sdks[@]}"
+if [[ ! " ${supported_sdks[@]} " =~ " ${sdk} " ]]; then
+    echo -e "Unsupported SDK: ${RED}${sdk}${RESET}"
+    echo -e "Supported SDKs: ${INFO}${supported_sdks[@]}${RESET}"
     exit 1
 fi
 

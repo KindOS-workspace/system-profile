@@ -45,6 +45,10 @@ function install() {
 
 
 case $action in
+    install-check)
+        [[ ! -x /usr/local/bin/dockerd ]] && exit 1
+        exit 0
+        ;;
     install)
         install $extra_args
         ;;
