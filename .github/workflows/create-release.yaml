@@ -17,7 +17,6 @@ jobs:
 
       - name: Create profile files
         run: |
-          rm -rf .git
           cp debian12/requirements.txt debian12_requirements.txt
 
       - name: Create the GH release
