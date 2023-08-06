@@ -2,14 +2,19 @@
 
 set -eu
 
-# Check if the script is being run as root
-if [ "$(id -u)" -ne 0 ]; then
-    echo "This script must be run as root. Please use 'sudo' to execute it."
-    exit 1
-fi
-
 # Change to the directory from which the script is being run
 cd "$(dirname "$0")"
+
+# Check if the first argument is "test"
+if [ "${1:-}" = "--test" ]; then
+    test_mode="true"
+else
+    test_mode="false"
+fi
+
+# Check if the script is being run as in test mode
+echo "Installing the KindOS Workspace profile"
+
 
 username="kindos"
 
@@ -25,6 +30,7 @@ fi
 rm -rf /etc/profile.d/kindos.d
 cp -r linux/* /
 chmod 644 /etc/profile.d/kindos-profile.sh /etc/profile.d/kindos.d/*.sh
+chmod 755 /usr/local/bin/*
 debian12/provision.sh
 
 
@@ -35,7 +41,13 @@ date > /etc/kindos/system-profile-date
 
 echo "Loading the new profile for testing"
 
-# Perform a test
-su - "$username" -c true
+
+# Check if running in test mode
+if [ "$test_mode" = "true" ]; then
+    sudo su - "$username" -c "sdkinit mamba"
+else:
+    # Always perform a basic test
+    sudo su - "$username" -c "true"
+fi
 
 echo -e "✔ Completed successfully"

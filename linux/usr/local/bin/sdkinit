@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -eu
+
+supported_sdks=(
+    "mamba"
+)
+
+function install_mamba () {
+    args="${@:1}"
+    # if --remove in args
+    if [[ " ${args[@]} " =~ " --remove " ]]; then
+        echo "Removing mamba"
+        rm -rf ~/mamba
+        return
+    fi
+    echo "Installing mamba"
+    #create random tmp dir
+    tmp_dir=$(mktemp -d)
+    curl -o $tmp_dir/mambainstall.sh -Ls "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+    bash $tmp_dir/mambainstall.sh -b -p ~/mamba $args
+    ~/mamba/bin/mamba init
+}
+
+# First argument is required
+if [ -z "${1:-}" ]; then
+    echo "Usage: sdkinit <sdk>"
+    echo "Supported SDKs: ${supported_sdks[@]}"
+    exit 1
+fi
+
+# Check if the skd is supported
+if [[ ! " ${supported_sdks[@]} " =~ " ${1} " ]]; then
+    echo "Unsupported SDK: $1"
+    echo "Supoorted SDKs: ${supported_sdks[@]}"
+    exit 1
+fi
+
+sdk=$1
+extra_args="${@:2}"
+
+case "$1" in
+    "mamba")
+        install_mamba $extra_args
+        ;;
+    *)
+        echo "Unknown SDK: $1"
+        ;;
+esac
+
+
