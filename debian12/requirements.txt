@@ -1,3 +1,13 @@
-# Please provide the list of requirements here
-# Format: <binary> <package_name>
-/usr/bin/curl   curl
+# List of packages that must be installed for the profile to work
+
+# Needed for the profile installer
+curl
+
+# Enable customization
+sudo
+
+# Enable vscode remote out of the box
+wget                    
+
+# Default developer experience
+git openssh-client      
