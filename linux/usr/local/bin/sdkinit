@@ -1,6 +1,21 @@
 #!/bin/bash
 
+INFO='\033[1;34m'
+RED='\033[0;31m'
+RESET='\e[0m' # Reset
+
 set -eu
+
+# Get list of supported SDKs from the directory names in linux/usr/local/sdkinit
+supported_sdks=($(ls -d /usr/local/sdkinit/* | xargs -n 1 basename| grep -v "\.files"))
+
+# First argument is required
+if [ $# -eq 0 ]; then
+    echo -e "${RED}No SDK specified${RESET}"
+    echo -e "Supported SDKs: ${INFO}${supported_sdks[@]}${RESET}"
+    exit 1
+fi
+
 
 if [[ $1 == --* ]]; then
     action="${1:2}"
@@ -12,15 +27,6 @@ else
 fi
 extra_args="${@:2}"
 
-# Get list of supported SDKs from the directory names in linux/usr/local/sdkinit
-supported_sdks=($(ls -d /usr/local/sdkinit/* | xargs -n 1 basename| grep -v "\.files"))
-
-# First argument is required
-if [ $# -eq 0 ]; then
-    echo "No SDK specified"
-    echo "Supoorted SDKs: ${supported_sdks[@]}"
-    exit 1
-fi
 
 sdk=${1}
 # Check if the skd is supported
@@ -30,5 +36,5 @@ if [[ ! " ${supported_sdks[@]} " =~ " ${1} " ]]; then
     exit 1
 fi
 
-echo "Running action '$action' for '$sdk'"
+echo -e "Running action ${INFO}'$action $sdk'${RESET}"
 /usr/local/sdkinit/${sdk} ${action} $extra_args

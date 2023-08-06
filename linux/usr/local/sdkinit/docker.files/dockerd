@@ -1,6 +1,11 @@
 #!/bin/bash
 set -eu
 
+# Colors
+INFO='\033[1;34m'
+RED='\033[0;31m'
+RESET='\e[0m' # Reset
+
 SCRITP_NAME=$(basename $0)
 
 export DOCKER_HOST="tcp://127.0.0.1:2375"
@@ -18,10 +23,11 @@ fi
 check_root() {
     # Check if running with root
     if [ "$EUID" -ne 0 ]; then
-        echo "Please run as root"
+        echo -e "${RED}Must be run as root${RESET}"
         exit 1
     fi
 }
+
 
 start() {
 
@@ -36,9 +42,9 @@ start() {
 status()
 {
     if [ -f /var/run/docker.pid ]; then
-        echo "Docker is running with PID $(cat /var/run/docker.pid)"
+        echo "Docker is running with PID ${INFO}$(cat /var/run/docker.pid){RESET}"
     else
-        echo "Docker is NOT running"
+        echo "${RED}Docker is NOT running${RESET}"
         exit 1
     fi
 }

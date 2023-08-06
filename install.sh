@@ -12,9 +12,16 @@ else
     test_mode="false"
 fi
 
+# Check if is running with root
+if [ "$(id -u)" != "0" ]; then
+    echo "This script must be run as root"
+    exit 1
+fi
+
+
+
 # Check if the script is being run as in test mode
 echo "Installing the KindOS Workspace profile"
-
 
 username="kindos"
 

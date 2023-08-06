@@ -9,17 +9,23 @@ function remove() {
     rm -rf ~/mamba
 }
 
+INFO='\033[1;34m'
+RED='\033[0;31m'
+RESET='\e[0m' # Reset
+
+
 function install() {
+
     # Check if running with root
     if [ "$EUID" -ne 0 ]; then
-        echo "Please run as root"
+        echo -e "${RED}Must be run as root${RESET}"
         exit 1
     fi
 
     #check if iptales is installed
     if ! command -v iptables &> /dev/null
     then
-        echo "iptables could not be found"
+        echo -e "${RED}iptables could not be found${RESET}"
         exit 1
     fi
 
