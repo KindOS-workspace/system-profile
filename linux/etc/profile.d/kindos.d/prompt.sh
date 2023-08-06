@@ -1,3 +1,4 @@
+#/bin/bash
 function parse_git_dirty {
     [[ $(git status --porcelain 2> /dev/null) ]] && echo "*"
 }
@@ -12,3 +13,4 @@ function last_status {
 }
 
 export PS1=" \$(last_status)\n\t \[\033[32m\]\$(parse_cwd)\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+export SUDO_PS1=$PS1

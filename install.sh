@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Chane to the directory from which the script is being run
-cd "$(dirname "$0")"
+set -eu
 
 # Check if the script is being run as root
 if [ "$(id -u)" -ne 0 ]; then
@@ -9,21 +8,26 @@ if [ "$(id -u)" -ne 0 ]; then
     exit 1
 fi
 
+# Change to the directory from which the script is being run
+cd "$(dirname "$0")"
+
 username="kindos"
 
 # Check if the user already exists
 if ! getent passwd "$username" >/dev/null 2>&1; then
     # Add the user with Bash as the default shell
     useradd -m --shell /bin/bash "$username"
-    echo "User $username added with Bash as the default shell."
-else
-    echo "User $username found - OK."
+    echo "User $username created with Bash as the default shell."
+    touch /home/$username/.kindos.enable
 fi
 
-set -eu
 
-cp -r debian12/* /
-chown -R root:root /etc/sudoers.d
-chmod -R 440 /etc/sudoers.d/kindos
+rm -rf /etc/profile.d/kindos.d
+cp -r linux/* /
+debian12/provision.sh
+
+# Perform a test
+su - "$username" -c true
 
 echo "Installation completed successfully."
+
