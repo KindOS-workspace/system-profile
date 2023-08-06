@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/bin/bash
+
 BLUE='\e[0;34m' # Blue
 WHITE='\e[0;37m' # White
 BOLD='\e[1m' # Bold
@@ -14,5 +15,8 @@ function check_default_file {
     fi
 }
 
-check_default_file .ssh
-check_default_file .gitconfig
+# check if userprofile is set
+if [[ -z "${USERPROFILE}" ]]; then
+    check_default_file .ssh
+    check_default_file .gitconfigfi
+fi

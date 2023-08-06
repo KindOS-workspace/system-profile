@@ -54,4 +54,7 @@ else
     sudo su - "$username" -c "true"
 fi
 
-echo -e "✔ Completed successfully"
+GREEN='\033[0;32m'       # ANSI escape code for green text color
+NC='\033[0m'             # ANSI escape code to reset text color
+
+echo -e "${GREEN}✔ KindOS Workspace profile installed successfully${NC}"

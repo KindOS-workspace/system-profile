@@ -1,9 +1,19 @@
 #!/bin/bash
 set -eu
 
+SCRITP_NAME=$(basename $0)
+
 export DOCKER_HOST="tcp://127.0.0.1:2375"
 
 action=$1
+
+# Check if an argument is suppled
+if [ $# -eq 0 ]; then
+    echo "No action specified"
+    echo "Usage: ${SCRITP_NAME} <action>"
+    echo "Actions: start, stop, status, log"
+    exit 1
+fi
 
 check_root() {
     # Check if running with root
@@ -26,7 +36,7 @@ start() {
 status()
 {
     if [ -f /var/run/docker.pid ]; then
-        echo "Docker is running"
+        echo "Docker is running with PID $(cat /var/run/docker.pid)"
     else
         echo "Docker is NOT running"
         exit 1
