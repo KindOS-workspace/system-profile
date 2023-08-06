@@ -7,7 +7,7 @@ curl
 sudo
 
 # Enable vscode remote out of the box
-wget                    
+wget
 
 # Default developer experience
-git openssh-client      
+git openssh-client
