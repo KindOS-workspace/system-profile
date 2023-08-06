@@ -11,3 +11,6 @@ wget
 
 # Default developer experience
 git openssh-client
+
+# For lang support
+locales

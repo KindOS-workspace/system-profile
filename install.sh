@@ -26,8 +26,17 @@ rm -rf /etc/profile.d/kindos.d
 cp -r linux/* /
 debian12/provision.sh
 
+
+install -d -m 755 /etc/kindos
+
+echo $(git rev-parse --short HEAD) > /etc/kindos/system-profile-version
+date > /etc/kindos/system-profile-date
+
+echo "Loading the new profile for testing"
+
 # Perform a test
 su - "$username" -c true
 
-echo "Installation completed successfully."
+echo -e "✔ Completed successfully"
+
 
