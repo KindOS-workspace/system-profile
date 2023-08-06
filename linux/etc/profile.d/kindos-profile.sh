@@ -11,7 +11,7 @@ function print_info() {
   DATE=$(cat /etc/kindos/system-profile-date)
 
   echo -e "KindOS Workspace version ${INFO}${VERSION}${RESET}, last updated: ${INFO}${DATE}${RESET}"
-  sdkinit --installed
+  echo $(sdkinit --installed) - $(sdkinit --available)
 }
 
 # Get list of installed SDKs

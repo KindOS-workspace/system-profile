@@ -31,15 +31,26 @@ function check_sdk_actions() {
     action=$1
     # if action is installed
     if [[ $action == "installed" ]]; then
-        INSTALLED=""
+        INSTALLED=()
         for sdk in ${supported_sdks[@]}; do
-            /usr/local/sdkinit/${sdk} install-check && INSTALLED="${INSTALLED} ${sdk}"
+            /usr/local/sdkinit/${sdk} install-check && INSTALLED+=($sdk)
         done
-        echo -e "Installed SDKs:${INFO}${INSTALLED}${RESET}"
-    else
-        echo -e "${RED}Unsupported SDK action $action${RESET}"
-        exit 1
+        if [[ ${#INSTALLED[@]} -eq 0 ]]; then
+            echo -e "No SDKs installed"
+        else
+            echo -e "Installed SDKs: ${INFO}${INSTALLED[@]}${RESET}"
+        fi
+        return
     fi
+        
+    if [[ $action == "available" ]]; then
+        echo -e "Available SDKs: ${INFO}${supported_sdks[@]}${RESET}"
+        return
+    fi
+    
+    echo -e "Unsupported action: ${RED}${action}${RESET}"
+    echo -e "Supported actions: ${INFO}installed${RESET}, ${INFO}available${RESET}"
+    exit 1
 }
 
 sdk=${1:-}

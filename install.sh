@@ -47,9 +47,6 @@ install -d -m 755 /etc/kindos
 echo $(git rev-parse --short HEAD) > /etc/kindos/system-profile-version
 date > /etc/kindos/system-profile-date
 
-echo "Loading the new profile for testing"
-
-
 # Check if running in test mode
 if [ "$test_mode" = "true" ]; then
     # Run the SDK initialization script in test mode
