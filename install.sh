@@ -16,7 +16,7 @@ username="kindos"
 # Check if the user already exists
 if ! getent passwd "$username" >/dev/null 2>&1; then
     # Add the user with Bash as the default shell
-    useradd -m --shell /bin/bash "$username"
+    useradd -c "www.kindos.org" -k /dev/null -m --shell /bin/bash "$username"
     echo "User $username created with Bash as the default shell."
     touch /home/$username/.kindos.enable
 fi
@@ -24,6 +24,7 @@ fi
 
 rm -rf /etc/profile.d/kindos.d
 cp -r linux/* /
+chmod 644 /etc/profile.d/kindos-profile.sh /etc/profile.d/kindos.d/*.sh
 debian12/provision.sh
 
 
@@ -38,5 +39,3 @@ echo "Loading the new profile for testing"
 su - "$username" -c true
 
 echo -e "✔ Completed successfully"
-
-
