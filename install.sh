@@ -44,7 +44,7 @@ debian12/provision.sh
 
 install -d -m 755 /etc/kindos
 
-echo $(git rev-parse --short HEAD) > /etc/kindos/system-profile-version
+echo $(git rev-parse --short HEAD 2>/dev/null) > /etc/kindos/system-profile-version || echo "Unknown" > /etc/kindos/system-profile-version
 date > /etc/kindos/system-profile-date
 
 # Check if running in test mode
