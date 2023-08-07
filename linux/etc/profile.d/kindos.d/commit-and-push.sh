@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# DESCRIPTION: Provide a function to commit and push changes to a git repository
+
 commit_and_push() {
     if [ $# -eq 0 ]; then
         echo "Please provide a commit message."

@@ -1,4 +1,8 @@
 #/bin/bash
+
+# DESCRIPTION: Provides a custom prompt wich reports git status and success/failure of the last command
+
+
 function parse_git_dirty {
     [[ $(git status --porcelain 2> /dev/null) ]] && echo "*"
 }

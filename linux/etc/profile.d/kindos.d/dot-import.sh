@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# DESCRIPTION: Automatically import files from the $USERPROFILE directory
+
 INFO='\033[1;34m'
 RESET='\e[0m' # Reset
 

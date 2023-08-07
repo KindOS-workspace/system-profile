@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# DESCRIPTION: Provides a function to increase the tag and push changes to a git repository
+
 tag_and_push() {
   increment_version() {
     version="$1"
